@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>详情页面</title>
+    <script type="text/javascript" src="lib/bmob.js"></script>
+    <script type="text/javascript" src="lib/bmob-min.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/update.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script
+            src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        #head1{
+            width: 70%;
+            height: 500px;
+            margin: 5px auto;
+        }
+        #container{
+            margin: 100px auto;
+        }
+        span{
+            font-size: 16px;
+        }
+        h4{
+            margin-left: 80%;
+        }
+        img{
+            margin-left: 80%;
+            margin-top: 10%;
+        }
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <h4><a href="list.html">返回主页面</a></h4>
+<div class="panel panel-danger" id="head1">
+    <div class="panel-heading">
+        <h3 class="panel-title" id="head_name" >标题</h3>
+    </div>
+    <div class="panel-body" >
+       <p> <span>种类：</span><span id="type"></span></p>
+        <p><span>关键词/句：</span><span id="keyWords"></span></p>
+        <p><span>作者：</span><span id="belongTo"></span></p>
+        <p> <span>内容：</span><span id="topic_content"></span></p>
+        <img src="./img/tree.png">
+    </div>
+</div>
+</div>
+
+
+<script>
+    Bmob.initialize("2cb04c095c3a5828848a8ad31cb3fa99", "fcd60678682c06ff1824173ea39a9ad1");
+    var Ohref=window.location.href;
+    var arrhref=Ohref.split("?id=");
+    var id=arrhref[1];
+   // alert(id);
+    var Mycsdn = Bmob.Object.extend("Mycsdn");
+    var query = new Bmob.Query(Mycsdn);
+    query.get(id, {
+        success: function (content) {
+            var id = content.id;
+            var belongTo = content.get('belongTo');
+            var head_name = content.get("head_name");
+            var type = content.get("type");
+            var keyWords = content.get("keyWords");
+            var createdAt = content.get("createdAt");
+            console.log(createdAt);
+            var topic_content = content.get("topic_content");
+            var visit_number = content.get("visit_number");
+           // alert(head_name);
+            console.log(content)
+            document.getElementById("head_name").innerText = head_name;
+            document.getElementById("type").innerText = type;
+            document.getElementById("belongTo").innerText = belongTo;
+            document.getElementById("topic_content").innerText = topic_content;
+            document.getElementById("keyWords").innerText = keyWords;
+            document.getElementById("visit_number").innerText=visit_number;
+
+        },
+        error: function (object, error) {
+            // 查询失败
+            alert("查询失败")
+        }
+    });
+</script>
+</body>
+</html>

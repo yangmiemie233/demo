@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="lib/bmob.js"></script>
+    <script type="text/javascript" src="lib/bmob-min.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<!--
+    <input class="username" id="username"type="text" placeholder="用户名"/><br>
+    <input class="password" id="password"type="password" placeholder="密码"/><br>
+    <button id="submit" >登录</button>-->
+<div class="login_box">
+    <div class="login_l_img">
+        <img src="./img/login-img.png"/>
+    </div>
+    <div class="login">
+        <div class="login_logo">
+            <a href="#"><img src="./img/login_logo.png"/></a>
+        </div>
+        <div class="login_name">
+            <p>管理员登录界面</p>
+        </div>
+        <form method="post">
+            <input name="username" type="text" placeholder="用户名" id="username">
+
+            <input name="password" type="password" id="password" placeholder="密码">
+
+            <input value="登录" type="button" style="width: 100%;" id="submit">
+        </form>
+    </div>
+
+</div>
+
+<script>
+    Bmob.initialize("2cb04c095c3a5828848a8ad31cb3fa99", "fcd60678682c06ff1824173ea39a9ad1");
+
+    function login() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var Manager = Bmob.Object.extend("Manager");
+        var query = new Bmob.Query(Manager);
+        query.equalTo("username", username);
+        query.find({
+            success: function (aa) {
+                // 查询成功，调用get方法获取对应属性的值
+               // alert(aa.length)
+                if (aa.length != 0) {
+                    for (var i = 0; i < aa.length; i++) {
+                        var object = aa[i];
+                        if (object.get('password') == password) {
+                            //alert(object.id + ' - ' + object.get('password'));
+                            window.location.href = "list.html"
+                        }
+                        else alert("用户密码不相等")
+                    }
+                } else {
+                    alert("用户名输入错误！请重新输入")
+                }
+            },
+            error: function (object, error) {
+                alert("查询错误")
+            }
+        })
+
+    }
+
+    $("#submit").click(function () {
+        login();
+    })
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加页面</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="lib/bmob.js"></script>
+    <script type="text/javascript" src="lib/bmob-min.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/update.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script
+            src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="div">
+    <form class="form-horizontal col-md-offset-3 col-md-8" method="post">
+
+        <div class="form-group">
+            <div class="col-sm-10">
+                <input
+                        type="text" name="name" class="form-control" id="head_name"
+                        placeholder="标题" >
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="tel" id="keyWords"
+                       placeholder="关键词"  >
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="type"
+                       name="mobileTel" placeholder="种类"  >
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="belongTo"
+                       placeholder="作者" >
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-sm-10">
+					<textarea  class="form-control" id="topic_content"  rows="20">
+
+						</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-10">
+                <input   class="btn btn-success login " value="添加"
+                         id="Submit">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-10">
+                <input type="button" class="btn btn-success login " value="返回"
+                       id="back" onClick="history.back(-1);">
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    Bmob.initialize("2cb04c095c3a5828848a8ad31cb3fa99", "fcd60678682c06ff1824173ea39a9ad1");
+    var Mycsdn = Bmob.Object.extend("Mycsdn");
+    function add_date() {
+        var query_add = new Mycsdn();
+        var head_name=document.getElementById("head_name").value;
+        var type=document.getElementById("type").value;
+        var belongTo=document.getElementById("belongTo").value;
+        var topic_content=document.getElementById("topic_content").value;
+        var keyWords=document.getElementById("keyWords").value;
+        var num = Math.ceil(Math.random()*1000).toString();
+        query_add.set("head_name",head_name);
+        query_add.set("type",type);
+        query_add.set("belongTo",belongTo);
+        query_add.set("topic_content",topic_content);
+        query_add.set("keyWords",keyWords);
+       query_add.set("visit_number",num);
+        query_add.save(null,{
+            success: function(qu) {
+                // 添加成功，返回成功之后的objectId（注意：返回的属性名字是id，不是objectId），你还可以在Bmob的Web管理后台看到对应的数据
+               // alert('添加数据成功，返回的objectId是：' + qu.id);
+                window.location.href="list.html"
+            },
+            error: function(qu, error) {
+                // 添加失败
+                alert('添加数据失败，返回错误信息：' + error.description);
+            }
+
+        })
+
+    }
+    $("#Submit").click(function () {
+        add_date();
+    })
+
+
+
+</script>
+</body>
+</html>

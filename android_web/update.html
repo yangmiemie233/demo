@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改页面</title>
+
+    <script type="text/javascript" src="lib/bmob.js"></script>
+    <script type="text/javascript" src="lib/bmob-min.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/update.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script
+            src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="div">
+    <form class="form-horizontal col-md-offset-2 col-md-8" method="post">
+        <div class="form-group">
+
+            <label for="head_name" class="col-sm-2 control-label">标题</label>
+            <div class="col-sm-10">
+                <input
+                        type="text" name="name" class="form-control" id="head_name">
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <label for="keyWords" class="col-sm-2 control-label">关键词/句</label>
+            <div class="col-sm-10">
+                <input
+                        type="text" name="name" class="form-control" id="keyWords">
+            </div>
+        </div>
+        <div class="form-group">
+
+            <label for="type" class="col-sm-2 control-label">种类</label>
+            <div class="col-sm-10">
+                <input
+                        type="text" name="name" class="form-control" id="type">
+            </div>
+        </div>
+        <div class="form-group">
+
+            <label for="belongTo" class="col-sm-2 control-label">作者</label>
+            <div class="col-sm-10">
+                <input
+                        type="text" name="name" class="form-control" id="belongTo">
+            </div>
+        </div>
+        <div class="form-group">
+
+            <label for="belongTo" class="col-sm-2 control-label">内容</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="topic_content" rows="10">
+
+						</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input class="btn btn-success login " value="确认修改"
+                       id="Submit">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="button" class="btn btn-success login " value="返回"
+                       id="back" onClick="history.back(-1);">
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    Bmob.initialize("2cb04c095c3a5828848a8ad31cb3fa99", "fcd60678682c06ff1824173ea39a9ad1");
+    var Ohref = window.location.href;
+    var arrhref = Ohref.split("?id=");
+    var id = arrhref[1];
+    //  alert(arrhref[1]);
+    var Mycsdn = Bmob.Object.extend("Mycsdn");
+    var query = new Bmob.Query(Mycsdn);
+    query.get(id, {
+        success: function (content) {
+            var id = content.id;
+            var belongTo = content.get('belongTo');
+            var head_name = content.get("head_name");
+            var type = content.get("type");
+            var keyWords = content.get("keyWords")
+            var createdAt = content.get("createdAt");
+            var topic_content = content.get("topic_content");
+            var visit_number = content.get("visit_number");
+           // alert(head_name);
+            document.getElementById("head_name").value = head_name;
+            document.getElementById("type").value = type;
+            document.getElementById("belongTo").value = belongTo;
+            document.getElementById("topic_content").value = topic_content;
+            document.getElementById("keyWords").value = keyWords;
+
+        },
+        error: function (object, error) {
+            // 查询失败
+            alert("查询失败")
+        }
+    });
+
+    function update_success() {
+        var head_name = document.getElementById("head_name").value;
+        var type = document.getElementById("type").value;
+        var belongTo = document.getElementById("belongTo").value;
+        var topic_content = document.getElementById("topic_content").value;
+        var keyWords = document.getElementById("keyWords").value;
+        var query_update = new Bmob.Query(Mycsdn);
+        query_update.get(id, {
+            success: function (content) {
+                content.set('head_name', head_name);
+                content.set('type', type);
+                content.set('belongTo', belongTo);
+                content.set('topic_content', topic_content);
+                content.set('keyWords', keyWords)
+                content.save();
+                // alert("chenggong ")
+                window.location.href = "list.html?id=" + id;
+            },
+            error: function (object, error) {
+                alert("更新失败")
+            }
+        })
+    }
+
+    $("#Submit").click(function () {
+        update_success();
+    })
+
+
+</script>
+</body>
+</html>

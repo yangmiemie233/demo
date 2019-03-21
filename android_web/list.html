@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客后台管理页面</title>
+    <script type="text/javascript" src="lib/bmob.js"></script>
+    <script type="text/javascript" src="lib/bmob-min.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script
+            src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+
+    .header {
+        padding: 50px 0 0;
+        text-align: center;
+        min-height: 200px;
+        position: relative;
+        background-repeat: no-repeat;
+        background-position: center 0;
+        background-size: cover;
+    }
+    h2 {
+        margin: auto;
+    }
+
+    .list-group-item {
+        margin: 0px 200px;
+    }
+    #add{
+        margin-left: 90%;
+    }
+    #container{
+        margin: 5px auto;
+    }
+
+</style>
+<body>
+<div class="header" style="background-image: url(./img/header.jpg)">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9"></div>
+            <!-- 下拉框按钮 -->
+            <div class="col-md-1">
+            </div>
+            <!--  增加同学的联系 -->
+            <div class="col-md-1">
+                <input type="button" value="增加博客" class="btn btn-info"
+                       style="margin-left: 60px"
+                       onClick="window.location.href='add.html'">
+            </div>
+            <!-- 安全退出按钮 -->
+            <div class="col-md-1">
+                <input type="button" value="安全退出" class="btn btn-warning"
+                       style="margin-left: 70px"
+                       onClick="window.location.href='login.html'">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-xs-12">
+                <div class="logotxt">
+                    <h1 style="color: #FFFFFF">博客的管理界面</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="container"></div>
+</body>
+
+<script>
+    Bmob.initialize("2cb04c095c3a5828848a8ad31cb3fa99", "fcd60678682c06ff1824173ea39a9ad1");
+    var Mycsdn = Bmob.Object.extend("Mycsdn");
+    var query = new Bmob.Query(Mycsdn);
+    var html = ''
+    query.find({
+        success: function (results) {
+           // alert("共查询到 " + results.length + " 条记录");
+            // 循环处理查询到的数据
+
+            for (var i = 0; i < results.length; i++) {
+                var object = results[i];
+                var id = object.id;
+                var belongTo = object.get('belongTo');
+                var head_name = object.get("head_name");
+                var type = object.get("type");
+                var createdAt = object.get("createdAt");
+                var topic_content = object.get("topic_content");
+                var visit_number = object.get("visit_number");
+                // html += "<h2 class=" + id + " >" + head_name + "<button id=" + id + " onclick=update(this)>" + "修改" + "</button><button id=" + id + " onclick=deletes(this)>";
+                // alert(object.id + ' - ' + object.get('belongTo'));
+                //html += "删除" + "</button></h2>"
+
+                html += "<li class=\"list-group-item\">\n" +
+                    "    <div class=\"row\">\n" +
+                    "        <div class=\"col-md-1\">\n" +
+                    "            <img src=\"./img/yang.png\" width=\"100%\">\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-7\">\n" +
+                    "            <h5> "+"<span style='color: deeppink;font-weight: bold'>标题:</span>" + head_name + " </h5>\n" +
+                    "            <h5>  "+"<span style='color: #27A9E3;font-weight: bold'>作者:</span>" + belongTo + "</h5>\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-3 \">\n" +
+                    "\n" +
+                    "            <button type=\"button\" class=\"btn btn-info\" onclick=message(this) id="+id+"  style=\"margin: 25px 15px\">详情</button>\n" +
+                    "\n" +
+                    "            <button type=\"button\" class=\"btn btn-danger\" onclick=deletes(this) id=" + id + ">删除</button>" +
+                    "<button type=\"button\" style=\"margin: 25px 15px\" class=\"btn btn-warning\" onclick=update(this) id=" + id + " >";
+                html += "修改" + "</button></div></div></li>"
+            }
+            console.log(html)
+            console.log(document.getElementById("container"));
+            document.getElementById("container").innerHTML = html;
+
+        },
+        error: function (error) {
+            alert("查询失败: " + error.code + " " + error.message);
+        }
+    });
+
+    function update(obj) {
+       // alert(obj.id)
+        window.location.href = "update.html?id="
+            + obj.id;
+    }
+
+    function deletes(obj) {
+        var id = obj.id;
+       // alert(id)
+        var delete_date = new Bmob.Query(Mycsdn);
+        delete_date.equalTo("objectId", id);
+        delete_date.destroyAll({
+            success: function () {
+                alert("删除成功");
+                window.location.href = "list.html"
+
+            },
+            error: function (error) {
+                alert("查询失败: " + error.code + " " + error.message);
+            }
+
+        })
+    }
+    function message(obj) {
+       var id=obj.id;
+      // alert(id);
+        window.location.href = "message.html?id="
+            + obj.id;
+    }
+
+</script>
+</html>

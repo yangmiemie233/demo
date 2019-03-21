@@ -1,0 +1,30 @@
+
+body {
+    /* background: url("./img/modify.jpg"); */
+    background-color:#FFEED9;
+    background-size: cover;
+}
+.login {
+    color: white;
+    height: 38px;
+    width: 360px;
+    background-color: #8dca51;
+}
+
+.div {
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    width: 700px;
+    height: 700px;
+    margin: 30px auto;
+    color: #59D042;
+    font-size: 16px;
+}
+
+input {
+    min-height: 43px;
+}
+
+form {
+    margin-top: 20px;
+}
